@@ -5,7 +5,7 @@
 #
 # License: MIT
 
-from __future__ import division
+from __future__ import division, absolute_import
 
 import warnings
 from random import Random
@@ -15,6 +15,7 @@ import sys
 import colorsys
 import numpy as np
 from operator import itemgetter
+from collections import Counter
 
 from PIL import Image
 from PIL import ImageColor
@@ -22,11 +23,11 @@ from PIL import ImageDraw
 from PIL import ImageFilter
 from PIL import ImageFont
 
-from .query_integral_image import query_integral_image
-from .tokenization import unigrams_and_bigrams, process_tokens
+from goorm.query_integral_image import query_integral_image
+from goorm.tokenization import unigrams_and_bigrams, process_tokens
 
 FILE = os.path.dirname(__file__)
-FONT_PATH = os.environ.get('FONT_PATH', os.path.join(FILE, 'DroidSansMono.ttf'))
+FONT_PATH = os.environ.get('FONT_PATH', os.path.join(FILE, 'NanumBarunGothic.ttf'))
 STOPWORDS = set(map(str.strip, open(os.path.join(FILE, 'stopwords')).readlines()))
 
 
@@ -249,6 +250,10 @@ class WordCloud(object):
         is removed and its counts are added to the version without
         trailing 's' -- unless the word ends with 'ss'.
 
+    korean : bool, default=True
+        Whether to tokenize Korean words with Korean noun tokenization or
+        standard processing.
+
     Attributes
     ----------
     ``words_`` : dict of string to float
@@ -278,7 +283,7 @@ class WordCloud(object):
                  max_font_size=None, font_step=1, mode="RGB",
                  relative_scaling=.5, regexp=None, collocations=True,
                  colormap=None, normalize_plurals=True, contour_width=0,
-                 contour_color='black'):
+                 contour_color='black', korean=True, mecab_dic_path=None):
         if font_path is None:
             font_path = FONT_PATH
         if color_func is None and colormap is None:
@@ -312,6 +317,8 @@ class WordCloud(object):
         self.background_color = background_color
         self.max_font_size = max_font_size
         self.mode = mode
+        self.korean = korean
+        self.mecab_dic_path = mecab_dic_path
         if relative_scaling < 0 or relative_scaling > 1:
             raise ValueError("relative_scaling needs to be "
                              "between 0 and 1, got %f." % relative_scaling)
@@ -548,7 +555,20 @@ class WordCloud(object):
         -------
         self
         """
-        words = self.process_text(text)
+
+        if self.korean:
+            try:
+                from eunjeon import Mecab
+            except ImportError:
+                raise Exception("Please install peunjeon properly. https://github.com/koshort/peunjeon")
+            if self.mecab_dic_path is not None:
+                tagger = Mecab(dicpath=self.mecab_dic_path)
+            else:
+                tagger = Mecab()
+            words = Counter(tagger.nouns(text))
+        else:
+            words = self.process_text(text)
+
         self.generate_from_frequencies(words)
         return self
 

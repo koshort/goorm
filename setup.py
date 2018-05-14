@@ -3,23 +3,24 @@ import io
 from setuptools import setup
 from setuptools.extension import Extension
 
-__version__ = re.search(
-    r'__version__\s*=\s*[\'"]([^\'"]*)[\'"]',  # It excludes inline comment too
-    io.open('wordcloud/__init__.py', encoding='utf_8').read()
-    ).group(1)
+__version__ = "0.3.9.0"
 
 setup(
-    author="Andreas Mueller",
-    author_email="t3kcit+wordcloud@gmail.com",
-    name='wordcloud',
+    author="nyanye",  # Original wordcloud author: Andreas Mueller t3kcit+wordcloud@gmail.com
+    author_email="iam@nyanye.com", 
+    name='goorm',
     version=__version__,
-    url='https://github.com/amueller/word_cloud',
-    description='A little word cloud generator',
+    url='https://github.com/koshort/goorm',
+    description='A little word cloud generator wrapper with Korean support',
     license='MIT',
-    install_requires=['matplotlib', 'numpy>=1.6.1', 'pillow'],
-    ext_modules=[Extension("wordcloud.query_integral_image",
-                           ["wordcloud/query_integral_image.c"])],
-    scripts=['wordcloud/wordcloud_cli.py'],
-    packages=['wordcloud'],
-    package_data={'wordcloud': ['stopwords', 'DroidSansMono.ttf']}
+    install_requires=['matplotlib', 'numpy>=1.6.1', 'pillow', 'eunjeon'],
+    ext_modules=[Extension("goorm.query_integral_image",
+                           ["goorm/query_integral_image.c"])],
+    entry_points={
+        'console_scripts': [
+            'goorm_cli = goorm.goorm_cli:main',
+        ],
+    },
+    packages=['goorm'],
+    package_data={'goorm': ['stopwords', 'NanumBarunGothic.ttf']}
 )

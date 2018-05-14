@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 r"""Command-line tool to generate word clouds
 Usage::
-    $ cat word.txt | wordcloud_cli.py
+    $ cat word.txt | goorm
 
-    $ wordcloud_cli.py --text=words.txt --stopwords=stopwords.txt
+    $ goorm --text=words.txt --stopwords=stopwords.txt
 """
 from __future__ import absolute_import
 
@@ -12,11 +12,12 @@ import sys
 import io
 import re
 import argparse
-import wordcloud as wc
 import numpy as np
+
 from PIL import Image
 
-from wordcloud import __version__
+from goorm import wordcloud as wc
+from goorm import __version__
 
 
 class FileType(object):
@@ -147,8 +148,15 @@ def parse_args(arguments):
         '--no_collocations', action='store_false', dest='collocations',
         help='do not add collocations (bigrams) to word cloud '
              '(default: add unigrams and bigrams)')
+    parser.add_argument(
+        '--korean', action='store_true', dest='korean',
+        help='Tokenize Korean.')
+    parser.add_argument(
+        '--mecab-dic-path', dest='mecab_dic_path',
+        help='Mecab dictionary path.')
     parser.add_argument('--version', action='version',
         version='%(prog)s {version}'.format(version=__version__))
+
     args = parser.parse_args(arguments)
 
     if args.colormask and args.color:
