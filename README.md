@@ -8,13 +8,13 @@ not implemented
 
 ## Examples
 ```
-python goorm_cli.py --imagefile=demo\template\cat.png --text=demo\text\cat.txt
+python goorm_cli.py --imagefile=demo\template\cat.png --text=demo\text\cat.txt --korean
 ```
 
 ![cat](/demo/cat.png)  
 
 ```
-python goorm_cli.py --imagefile=demo\template\apple.png --text=demo\text\food.txt
+python goorm_cli.py --imagefile=demo\template\apple.png --text=demo\text\food.txt --korean
 ```
 
 ![food](/demo/apple.png)  
