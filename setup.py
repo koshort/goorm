@@ -16,11 +16,6 @@ setup(
     install_requires=['matplotlib', 'numpy>=1.6.1', 'pillow', 'eunjeon'],
     ext_modules=[Extension("goorm.query_integral_image",
                            ["goorm/query_integral_image.c"])],
-    entry_points={
-        'console_scripts': [
-            'goorm_cli = goorm.goorm_cli:main',
-        ],
-    },
     packages=['goorm'],
     package_data={'goorm': ['stopwords', 'NanumBarunGothic.ttf']}
 )
