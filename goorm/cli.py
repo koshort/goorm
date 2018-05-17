@@ -151,9 +151,6 @@ def parse_args(arguments):
     parser.add_argument(
         '--korean', action='store_true', dest='korean',
         help='Tokenize Korean.')
-    parser.add_argument(
-        '--mecab-dic-path', dest='mecab_dic_path',
-        help='Mecab dictionary path.')
     parser.add_argument('--version', action='version',
         version='%(prog)s {version}'.format(version=__version__))
 
