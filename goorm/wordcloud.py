@@ -283,7 +283,7 @@ class WordCloud(object):
                  max_font_size=None, font_step=1, mode="RGB",
                  relative_scaling=.5, regexp=None, collocations=True,
                  colormap=None, normalize_plurals=True, contour_width=0,
-                 contour_color='black', korean=True, mecab_dic_path=None):
+                 contour_color='black', korean=True):
         if font_path is None:
             font_path = FONT_PATH
         if color_func is None and colormap is None:
@@ -318,7 +318,6 @@ class WordCloud(object):
         self.max_font_size = max_font_size
         self.mode = mode
         self.korean = korean
-        self.mecab_dic_path = mecab_dic_path
         if relative_scaling < 0 or relative_scaling > 1:
             raise ValueError("relative_scaling needs to be "
                              "between 0 and 1, got %f." % relative_scaling)
@@ -560,11 +559,8 @@ class WordCloud(object):
             try:
                 from eunjeon import Mecab
             except ImportError:
-                raise Exception("Please install peunjeon properly. https://github.com/koshort/peunjeon")
-            if self.mecab_dic_path is not None:
-                tagger = Mecab(dicpath=self.mecab_dic_path)
-            else:
-                tagger = Mecab()
+                raise Exception("Please install pyeunjeon properly. https://github.com/koshort/pyeunjeon")
+            tagger = Mecab()
             words = Counter(tagger.nouns(text))
         else:
             words = self.process_text(text)
