@@ -3,6 +3,9 @@
 A little word cloud generator in Python - Korean wrapper  
 파이썬 워드 클라우드 라이브러리 한국어 wrapper goorm(구름)
 
+## Koshort :purple_heart: KoNLPy
+[KoNLPy와 Koshort의 통합이 진행되고 있습니다!](https://github.com/konlpy/konlpy/issues/202)
+
 ## Installation
 ```bash
 pip install goorm
